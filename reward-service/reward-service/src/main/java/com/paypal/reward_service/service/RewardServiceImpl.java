@@ -1,0 +1,29 @@
+package com.paypal.reward_service.service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.paypal.reward_service.entity.Reward;
+import com.paypal.reward_service.repository.RewardRepository;
+
+@Service
+public class RewardServiceImpl implements RewardService{
+    @Autowired
+    private RewardRepository rewardRepository;
+
+
+
+    @Override
+    public Reward sendReward(Reward reward) {
+        reward.setSentAt(LocalDateTime.now());
+        return rewardRepository.save(reward);
+    }
+
+    @Override
+    public List<Reward> getRewardsByUserId(Long userId) {
+        return rewardRepository.findByUserId(userId);
+    }
+}
