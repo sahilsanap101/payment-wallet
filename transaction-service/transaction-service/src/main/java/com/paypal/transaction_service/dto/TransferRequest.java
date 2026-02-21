@@ -1,40 +1,46 @@
 package com.paypal.transaction_service.dto;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-
 public class TransferRequest {
 
-    @NotNull
     private Long senderId;
-
-    @NotNull
     private Long receiverId;
-
-    @Positive
     private Double amount;
 
-    public Long getSenderId() {
-        return senderId;
+
+    public TransferRequest() {
     }
 
-    public void setSenderId(Long senderId) {
+    public TransferRequest(Long senderId, Long receiverId, Double amount,
+                           String senderNameSnapshot, String receiverNameSnapshot) {
         this.senderId = senderId;
+        this.receiverId = receiverId;
+        this.amount = amount;
+    }
+
+    // Getters
+    public Long getSenderId() {
+        return senderId;
     }
 
     public Long getReceiverId() {
         return receiverId;
     }
 
-    public void setReceiverId(Long receiverId) {
-        this.receiverId = receiverId;
-    }
-
     public Double getAmount() {
         return amount;
+    }
+
+    // Setters
+    public void setSenderId(Long senderId) {
+        this.senderId = senderId;
+    }
+
+    public void setReceiverId(Long receiverId) {
+        this.receiverId = receiverId;
     }
 
     public void setAmount(Double amount) {
         this.amount = amount;
     }
+
 }
