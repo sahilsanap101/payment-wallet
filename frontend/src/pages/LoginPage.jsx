@@ -1,49 +1,50 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext"; 
 import "../stylesheets/styles.scss";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login } = useAuth(); 
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    const payload = { email, password };
+  
     try {
       const response = await fetch("http://localhost:8080/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
-
+  
       const data = await response.json();
-
+  
       if (!response.ok) {
         alert("Login failed: " + (data.message || "Unknown error"));
         return;
       }
-
-      // Prepare user data (fallback if backend doesn't send it)
-      const userData =
-        data.user || { email, name: email.split("@")[0] };
-
-      // ✅ Single source of truth (handles localStorage inside)
-      login(data.token, userData);
-
+  
+      localStorage.setItem("token", data.token);
+      
+      // ADD THESE LINES - Store user data if available
+      if (data.user) {
+        localStorage.setItem("userData", JSON.stringify(data.user));
+        login(data.user, data.token); // Update auth context
+      } else {
+        // If no user data in response, create a basic user object
+        const userData = { email: email, name: email.split('@')[0] };
+        localStorage.setItem("userData", JSON.stringify(userData));
+        login(userData, data.token); // Update auth context
+      }
+      
       alert("Login successful!");
-
-      // Reset fields
-      setEmail("");
-      setPassword("");
-
-      // Redirect
+  
+      // Redirect to /home
       navigate("/home");
-
+  
     } catch (err) {
       console.error("Network error:", err);
       alert("Network error: " + err.message);
@@ -54,8 +55,8 @@ function LoginPage() {
     <div className="auth-container">
       <div className="auth-card">
         <div className="auth-header">
-          <h2>Login</h2>
-          <p>Welcome back</p>
+          <h2>Welcome Back</h2>
+          <p>Sign in to your account</p>
         </div>
 
         <form onSubmit={handleLogin}>
@@ -86,14 +87,12 @@ function LoginPage() {
           </div>
 
           <button type="submit" className="submit-btn btn-login">
-            Login
+            Sign In
           </button>
         </form>
 
         <div className="auth-footer">
-          <p>
-            Don’t have an account? <a href="/signup">Sign up</a>
-          </p>
+          <p>Don't have an account? <a href="/signup">Sign up</a></p>
         </div>
       </div>
     </div>
