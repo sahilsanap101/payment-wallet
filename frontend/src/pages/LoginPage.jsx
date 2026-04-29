@@ -32,7 +32,7 @@ function LoginPage() {
       // ADD THESE LINES - Store user data if available
       if (data.user) {
         localStorage.setItem("userData", JSON.stringify(data.user));
-        login(data.user, data.token); // Update auth context
+        login(data.token,data.user); // Update auth context
       } else {
         // If no user data in response, create a basic user object
         const userData = { email: email, name: email.split('@')[0] };

@@ -6,16 +6,13 @@ public class SignupRequest {
     private String password;
     private String adminKey;
 
-    public SignupRequest() {
-        // default constructor
-    }
+    public SignupRequest() {}
 
     public SignupRequest(String name, String email, String password, String adminKey) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.adminKey = adminKey;
-
     }
 
     public String getName() {
@@ -25,8 +22,6 @@ public class SignupRequest {
     public void setName(String name) {
         this.name = name;
     }
-
-
 
     public String getEmail() {
         return email;
@@ -46,5 +41,10 @@ public class SignupRequest {
 
     public String getAdminKey() {
         return adminKey;
+    }
+
+    // ✅ ADD THIS (IMPORTANT)
+    public void setAdminKey(String adminKey) {
+        this.adminKey = adminKey;
     }
 }

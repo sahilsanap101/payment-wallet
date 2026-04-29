@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const token = localStorage.getItem("authToken");
+        const token = localStorage.getItem("token"); // ✅ FIXED
         const userData = localStorage.getItem("userData");
 
         if (token && userData) {
@@ -17,13 +17,13 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = (token, userData) => {
-        localStorage.setItem("authToken", token);
+        localStorage.setItem("token", token); // ✅ FIXED
         localStorage.setItem("userData", JSON.stringify(userData));
         setUser(userData);
     };
 
     const logout = () => {
-        localStorage.removeItem("authToken");
+        localStorage.removeItem("token"); // ✅ FIXED
         localStorage.removeItem("userData");
         setUser(null);
     };

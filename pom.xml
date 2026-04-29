@@ -10,16 +10,13 @@
    <packaging>pom</packaging>
 
 
-   <modules>
-       <module>user-service</module>
-       <module>transaction-service</module>
-       <module>notification-service</module>
-       <module>reward-service</module>
-       <module>api-gateway</module>
-
-
-       <!-- Add your other services here -->
-   </modules>
+<modules>
+    <module>user-service/user-service</module>
+    <module>transaction-service/transaction-service</module>
+    <module>notification-service/notification-service</module>
+    <module>reward-service/reward-service</module>
+    <module>api-gateway/api-gateway</module>
+</modules>
 
 
    <properties>

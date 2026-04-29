@@ -3,7 +3,7 @@ package com.paypal.reward_service.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,13 +20,15 @@ public class RewardController {
         this.rewardRepository = rewardRepository;
     }
 
-    @GetMapping
-    public List<Reward> getAllRewards() {
-        return rewardRepository.findAll();
+    @GetMapping("/me")
+    public List<Reward> getMyRewards(
+            @RequestHeader("X-User-Id") String userId
+    ) {
+        return rewardRepository.findByUserId(Long.parseLong(userId));
     }
 
-    @GetMapping("/user/{userId}")
-    public List<Reward> getRewardsByUserId(@PathVariable Long userId) {
-        return rewardRepository.findByUserId(userId);
+    @GetMapping("/all")
+    public List<Reward> getAllRewards() {
+        return rewardRepository.findAll();
     }
 }

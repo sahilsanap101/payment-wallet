@@ -19,33 +19,30 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
 
         String path = exchange.getRequest().getPath().value();
 
-        // ✅ Allow public authentication endpoints
+        // ✅ Allow public endpoints
         if (path.startsWith("/auth/")) {
             return chain.filter(exchange);
         }
 
-        // ✅ Get Authorization header safely
         String authHeader = exchange.getRequest()
                 .getHeaders()
                 .getFirst(HttpHeaders.AUTHORIZATION);
 
-        // ✅ Validate header presence and format
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
 
         try {
-            // ✅ Extract and validate token
             String token = authHeader.substring(7);
             Claims claims = JwtUtil.validateToken(token);
 
-            // ✅ Pass user info downstream (optional but useful)
+            // Inject user info
             exchange.getRequest()
                     .mutate()
                     .header("X-User-Email", claims.getSubject())
-                    .header("X-User-Id", claims.get("userId", String.class))
-                    .header("X-User-Role", claims.get("role", String.class))
+                    .header("X-User-Id", String.valueOf(claims.get("userId")))
+                    .header("X-User-Role", String.valueOf(claims.get("role")))
                     .build();
 
             return chain.filter(exchange);
@@ -58,6 +55,6 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return -100; // High priority
+        return -100;
     }
 }

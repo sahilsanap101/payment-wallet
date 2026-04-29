@@ -1,6 +1,5 @@
 package com.paypal.wallet_service.controller;
 
-
 import com.paypal.wallet_service.dto.*;
 import com.paypal.wallet_service.service.WalletService;
 import org.springframework.http.ResponseEntity;
@@ -17,32 +16,52 @@ public class WalletController {
     }
 
     @PostMapping
-    public ResponseEntity<WalletResponse> createWallet(@RequestBody CreateWalletRequest request) {
+    public ResponseEntity<WalletResponse> createWallet(
+            @RequestBody CreateWalletRequest request,
+            @RequestHeader("X-User-Id") String userId
+    ) {
+        request.setUserId(Long.parseLong(userId));
         return ResponseEntity.ok(walletService.createWallet(request));
     }
 
     @PostMapping("/credit")
-    public ResponseEntity<WalletResponse> credit(@RequestBody CreditRequest request) {
+    public ResponseEntity<WalletResponse> credit(
+            @RequestBody CreditRequest request,
+            @RequestHeader("X-User-Id") String userId
+    ) {
+        request.setUserId(Long.parseLong(userId));
         return ResponseEntity.ok(walletService.credit(request));
     }
 
     @PostMapping("/debit")
-    public ResponseEntity<WalletResponse> debit(@RequestBody DebitRequest request) {
+    public ResponseEntity<WalletResponse> debit(
+            @RequestBody DebitRequest request,
+            @RequestHeader("X-User-Id") String userId
+    ) {
+        request.setUserId(Long.parseLong(userId));
         return ResponseEntity.ok(walletService.debit(request));
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<WalletResponse> getWallet(@PathVariable Long userId) {
-        return ResponseEntity.ok(walletService.getWallet(userId));
+    @GetMapping("/me")
+    public ResponseEntity<WalletResponse> getWallet(
+            @RequestHeader("X-User-Id") String userId
+    ) {
+        return ResponseEntity.ok(walletService.getWallet(Long.parseLong(userId)));
     }
 
     @PostMapping("/hold")
-    public ResponseEntity<HoldResponse> placeHold(@RequestBody HoldRequest request) {
+    public ResponseEntity<HoldResponse> placeHold(
+            @RequestBody HoldRequest request,
+            @RequestHeader("X-User-Id") String userId
+    ) {
+        request.setUserId(Long.parseLong(userId));
         return ResponseEntity.ok(walletService.placeHold(request));
     }
 
     @PostMapping("/capture")
-    public ResponseEntity<WalletResponse> capture(@RequestBody CaptureRequest request) {
+    public ResponseEntity<WalletResponse> capture(
+            @RequestBody CaptureRequest request
+    ) {
         return ResponseEntity.ok(walletService.captureHold(request));
     }
 
@@ -50,7 +69,4 @@ public class WalletController {
     public ResponseEntity<HoldResponse> release(@PathVariable String holdReference) {
         return ResponseEntity.ok(walletService.releaseHold(holdReference));
     }
-
-
-
 }
