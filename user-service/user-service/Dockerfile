@@ -1,11 +1,15 @@
-# Step 1: Build the app
 FROM maven:3.9.9-eclipse-temurin-17 AS build
 
 WORKDIR /app
-COPY . .
+
+# Go inside nested folder
+COPY user-service/user-service ./  
+
+WORKDIR /app
+
 RUN mvn clean package -DskipTests
 
-# Step 2: Run the app
+# Run stage
 FROM eclipse-temurin:17-jdk-jammy
 
 WORKDIR /app
