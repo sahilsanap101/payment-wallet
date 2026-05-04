@@ -1,4 +1,4 @@
-package com.paypal.userservice;
+package com.paypal.user_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
