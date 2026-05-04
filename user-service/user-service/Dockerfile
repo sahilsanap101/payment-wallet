@@ -2,14 +2,10 @@ FROM maven:3.9.9-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
-# Go inside nested folder
-COPY user-service/user-service ./  
-
-WORKDIR /app
+COPY . .   # ✅ THIS IS THE FIX
 
 RUN mvn clean package -DskipTests
 
-# Run stage
 FROM eclipse-temurin:17-jdk-jammy
 
 WORKDIR /app
