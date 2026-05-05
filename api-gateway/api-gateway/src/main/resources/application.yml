@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_PORT:8080}
+  port: 8080
 
 spring:
   application:
@@ -10,31 +10,31 @@ spring:
       routes:
 
         - id: user-service
-          uri: ${USER_SERVICE_URL}
+          uri: http://localhost:8081
           predicates:
             - Path=/api/users/**
 
         - id: auth-service
-          uri: ${AUTH_SERVICE_URL}
+          uri: http://localhost:8081
           predicates:
             - Path=/auth/**
 
         - id: transaction-service
-          uri: ${TRANSACTION_SERVICE_URL}
+          uri: http://localhost:8082
           predicates:
             - Path=/api/transactions/**
 
         - id: wallet-service
-          uri: ${WALLET_SERVICE_URL}
+          uri: http://localhost:8083
           predicates:
             - Path=/api/v1/wallets/**
 
         - id: reward-service
-          uri: ${REWARD_SERVICE_URL}
+          uri: http://localhost:8084
           predicates:
             - Path=/api/rewards/**
 
         - id: notification-service
-          uri: ${NOTIFICATION_SERVICE_URL}
+          uri: http://localhost:8085
           predicates:
             - Path=/api/notify/**
